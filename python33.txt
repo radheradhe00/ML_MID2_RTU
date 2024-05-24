@@ -1,0 +1,237 @@
+1.)Count lines in a file that does not start with T
+
+
+def count_lines_not_starting_with_t(file_path):
+    count = 0
+    with open(file_path, 'r') as file:
+        for line in file:
+            if not line.startswith('T'):
+                count += 1
+    return count
+
+# Example usage
+file_path = 'example.txt'
+count = count_lines_not_starting_with_t(file_path)
+print(f"Number of lines that do not start with 'T': {count}")
+
+
+2.)Count the number of palindromic substrings in the given string
+
+def count_palindromic_substrings(s):
+    def expand_around_center(left, right):
+        count = 0
+        while left >= 0 and right < len(s) and s[left] == s[right]:
+            count += 1
+            left -= 1
+            right += 1
+        return count
+    
+    total_count = 0
+    for i in range(len(s)):
+        # Odd length palindromes
+        total_count += expand_around_center(i, i)
+        # Even length palindromes
+        total_count += expand_around_center(i, i + 1)
+    
+    return total_count
+
+# Example usage
+input_string = "aaa"
+result = count_palindromic_substrings(input_string)
+print(f"Number of palindromic substrings in '{input_string}': {result}")
+
+3.)Find occurence of "the" in a file
+
+def count_the_occurrences(file_path):
+    with open(file_path, 'r') as file:
+        content = file.read()
+    
+    # Normalize the content by converting it to lowercase
+    content = content.lower()
+    
+    # Split the content into words
+    words = content.split()
+    
+    # Count the occurrences of the word 'the'
+    count = words.count('the')
+    
+    return count
+
+# Example usage
+file_path = 'example.txt'
+count = count_the_occurrences(file_path)
+print(f"Number of occurrences of 'the': {count}")
+
+
+4.) Find max length of common substring without repeating char
+
+def length_of_longest_substring(s):
+    char_index = {}
+    left = 0
+    max_length = 0
+
+    for right, char in enumerate(s):
+        if char in char_index and char_index[char] >= left:
+            left = char_index[char] + 1
+        char_index[char] = right
+        max_length = max(max_length, right - left + 1)
+    
+    return max_length
+
+# Example usage
+input_string = "abcabcbb"
+result = length_of_longest_substring(input_string)
+print(f"Maximum length of substring without repeating characters: {result}")
+
+5.) Read a file and tokenize each line and store the lines in a tuple and print the tuple
+
+def tokenize_line(line):
+    """Tokenizes a line by splitting it into words."""
+    return line.strip().split()
+
+def read_file_and_tokenize(filename):
+    """Reads a file, tokenizes each line, and stores the lines in a tuple."""
+    lines = []
+    with open(filename, 'r') as file:
+        for line in file:
+            tokens = tokenize_line(line)
+            lines.append(tokens)
+    return tuple(lines)
+
+# Example file name
+filename = 'example.txt'
+
+# Read file and tokenize lines
+file_lines = read_file_and_tokenize(filename)
+
+# Print the tuple containing all lines
+print(file_lines)
+
+6.) Print the valid paranthesis with the value of n
+
+def generate_valid_parentheses(n):
+    def backtrack(s='', left=0, right=0):
+        if len(s) == 2 * n:
+            result.append(s)
+            return
+        if left < n:
+            backtrack(s + '(', left + 1, right)
+        if right < left:
+            backtrack(s + ')', left, right + 1)
+
+    result = []
+    backtrack()
+    return result
+
+# Example usage:
+n = 3
+valid_parentheses = generate_valid_parentheses(n)
+print(valid_parentheses)
+
+['((()))', '(()())', '(())()', '()(())', '()()()']
+
+
+7. amcount
+
+def AMCount(file_name):
+    try:
+        # Open the file in read mode
+        with open(file_name, 'r') as file:
+            # Initialize counters for A and M
+            count_a = 0
+            count_m = 0
+            
+            # Read each line from the file
+            for line in file:
+                # Iterate through each character in the line
+                for char in line:
+                    # Convert the character to lowercase for case-insensitive comparison
+                    char_lower = char.lower()
+                    # Check if the character is A or M
+                    if char_lower == 'a':
+                        count_a += 1
+                    elif char_lower == 'm':
+                        count_m += 1
+            
+            # Display the counts
+            print("Occurrences of A (including lowercase):", count_a)
+            print("Occurrences of M (including lowercase):", count_m)
+    
+    except FileNotFoundError:
+        print("File not found.")
+
+# Example usage
+AMCount("STORY.TXT")
+
+
+8>) common prefix
+
+# Python 3 program to find longest 
+# common prefix of given array of words.
+def longestCommonPrefix( a):
+    
+    size = len(a)
+
+    # if size is 0, return empty string 
+    if (size == 0):
+        return ""
+
+    if (size == 1):
+        return a[0]
+
+    # sort the array of strings 
+    a.sort()
+    
+    # find the minimum length from 
+    # first and last string 
+    end = min(len(a[0]), len(a[size - 1]))
+
+    # find the common prefix between 
+    # the first and last string 
+    i = 0
+    while (i < end and 
+           a[0][i] == a[size - 1][i]):
+        i += 1
+
+    pre = a[0][0: i]
+    return pre
+
+# Driver Code
+if __name__ == "__main__":
+
+    input = ["geeksforgeeks", "geeks", 
+                     "geek", "geezer"]
+    print("The longest Common Prefix is :" ,
+                 longestCommonPrefix(input))
+
+# This code is contributed by ita_c
+
+
+8>  
+
+def longest_common_prefix(words):
+    if not words:
+        return ""
+    
+    # Sort the words to ensure the shortest word comes first
+    words.sort()
+    
+    # Take the first word as the reference
+    prefix = words[0]
+    
+    # Iterate through the characters of the reference word
+    for i in range(len(prefix)):
+        # Check if the character matches across all words
+        for word in words[1:]:
+            if prefix[i] != word[i]:
+                return prefix[:i]
+    
+    return prefix
+
+# Example usage:
+words = ["flower", "flow", "flight"]
+print(longest_common_prefix(words))  # Output: "fl"
+
+
+
+
